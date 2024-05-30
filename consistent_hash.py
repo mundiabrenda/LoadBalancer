@@ -1,4 +1,4 @@
-# step 1
+# Step 1
 N = 3  # Number of server containers
 num_slots = 512  # Total number of slots in the consistent hash map
 K = 9  # Number of virtual servers for each server container

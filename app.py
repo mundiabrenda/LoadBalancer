@@ -1,6 +1,5 @@
 from flask import Flask, jsonify
 import os
-# from consistent_hash import map_request
 
 
 app = Flask(__name__)
