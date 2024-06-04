@@ -8,13 +8,10 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir Flask
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-# Define environment variable
-ENV SERVER_ID=Unknown
-
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+# Run load_balancer.py when the container launches
+CMD ["python", "load_balancer.py"]
