@@ -4,7 +4,7 @@ build:
 
 # Run the containers
 up:
-	docker-compose up
+	docker-compose up -d
 
 # Stop the containers
 down:

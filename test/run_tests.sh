@@ -4,7 +4,7 @@
 cd "$(dirname "$0")/.." || exit
 
 # Bring up the Docker containers
-make up
+docker-compost up -d
 
 # Wait for the containers to be fully up
 sleep 10
@@ -13,4 +13,4 @@ sleep 10
 python3 tests/test_load_balancer.py
 
 # Bring down the Docker containers
-make down
+docker-compose down

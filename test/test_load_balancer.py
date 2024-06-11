@@ -1,7 +1,7 @@
 import requests
 import threading
 import time
-import matplotlib.pyplot as plt
+import json
 
 # Constants
 LOAD_BALANCER_URL = "http://localhost:5000"
@@ -36,20 +36,15 @@ def test_load_distribution():
     server_counts = {}
     for result in results:
         if isinstance(result, str):
-            server_id = results.split(": ")[-1]
+            server_id = result.split(": ")[-1]
             if server_id not in server_counts:
                 server_counts[server_id] = 0
             server_counts[server_id] += 1
 
-    # Plot the results
-    server_ids = list(server_counts.keys())
-    request_counts = list(server_counts.values())
-
-    plt.bar(server_ids, request_counts)
-    plt.xlabel('Server ID')
-    plt.ylabel('Number of Requests')
-    plt.title('Request Distribution Across Servers')
-    plt.show()
+    # Print the results
+    print("Request Distribution Across Servers:")
+    for server_id, count in server_counts.items():
+        print(f"Server {server_id}: {count} requests")
 
 
 def test_scalability():
@@ -71,10 +66,11 @@ def test_scalability():
         # Count the requests handled by each server
         server_counts = {}
         for result in results:
-            server_id = result.split(": ")[-1]
-            if server_id not in server_counts:
-                server_counts[server_id] = 0
-            server_counts[server_id] += 1
+            if isinstance(result, str):
+                server_id = result.split(": ")[-1]
+                if server_id not in server_counts:
+                    server_counts[server_id] = 0
+                server_counts[server_id] += 1
 
         # Calculate the average load
         average_load = sum(server_counts.values()) / len(server_counts)
@@ -84,12 +80,10 @@ def test_scalability():
         requests.delete(f"{LOAD_BALANCER_URL}/rm", json={"remove_instances": count,
                                                          "hostnames": [f"server_{i+1}" for i in range(count)]})
 
-    # Plot the results
-    plt.plot([2, 3, 4, 5, 6], average_loads)
-    plt.xlabel('Number of Servers')
-    plt.ylabel('Average load')
-    plt.title('Scalability Analysis')
-    plt.show()
+    # Print the results
+    print("Scalability Analysis:")
+    for count, avg_load in zip(server_counts, average_loads):
+        print(f"{count} servers: Average load = {avg_load}")
 
 
 if __name__ == "__main__":
